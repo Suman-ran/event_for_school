@@ -1,3 +1,49 @@
+// import { Toaster } from "@/components/ui/toaster";
+// import { Toaster as Sonner } from "@/components/ui/sonner";
+// import { TooltipProvider } from "@/components/ui/tooltip";
+// import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+// import { BrowserRouter, Routes, Route } from "react-router-dom";
+// import { useEffect } from "react";
+// import Index from "./pages/Index";
+// import NotFound from "./pages/NotFound";
+// import { EventProvider } from './components/EventContext';
+// import { testFirebaseConnection, setupAdminUser } from './lib/firebase-test';
+
+// const queryClient = new QueryClient();
+
+// const App = () => {
+//   useEffect(() => {
+//     // Test Firebase connection and set up admin user on app startup
+//     const initializeFirebase = async () => {
+//       await testFirebaseConnection();
+//       await setupAdminUser();
+//     };
+    
+//     initializeFirebase();
+//   }, []);
+
+//   return (
+//     <EventProvider>
+//       <QueryClientProvider client={queryClient}>
+//         <TooltipProvider>
+//           <Toaster />
+//           <Sonner />
+//           <BrowserRouter>
+//             <Routes>
+//               <Route path="/event_for_school" element={<Index />} />
+//               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+//               <Route path="*" element={<NotFound />} />
+//             </Routes>
+//           </BrowserRouter>
+//         </TooltipProvider>
+//       </QueryClientProvider>
+//     </EventProvider>
+//   );
+// };
+
+// export default App;
+
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -28,10 +74,9 @@ const App = () => {
         <TooltipProvider>
           <Toaster />
           <Sonner />
-          <BrowserRouter>
+          <BrowserRouter basename="/event_for_school">  {/* Set basename */}
             <Routes>
-              <Route path="/event_for_school" element={<Index />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="/" element={<Index />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
