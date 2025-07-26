@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Trophy, Users, Calendar, Award, BarChart3, Settings, Presentation } from 'lucide-react';
@@ -9,11 +9,33 @@ import AdminDashboard from '@/components/AdminDashboard';
 import AdminLogin from '@/components/AdminLogin';
 import CarouselView from '@/components/CarouselView';
 import { useEventContext } from '../components/EventContext';
+import { onAuthStateChange, logoutAdmin } from '@/lib/firebase-auth';
+import { useToast } from '@/hooks/use-toast';
 
 const Index = () => {
   const [activeView, setActiveView] = useState<'public' | 'admin' | 'carousel' | 'login'>('public');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { events } = useEventContext();
+  const { toast } = useToast();
+
+  // Listen to Firebase auth state changes
+  useEffect(() => {
+    const unsubscribe = onAuthStateChange((user) => {
+      if (user) {
+        setIsAuthenticated(true);
+        if (activeView === 'login') {
+          setActiveView('admin');
+        }
+      } else {
+        setIsAuthenticated(false);
+        if (activeView === 'admin') {
+          setActiveView('public');
+        }
+      }
+    });
+
+    return () => unsubscribe();
+  }, [activeView]);
 
   // Calculate stats
   const totalEvents = events.length;
@@ -43,9 +65,22 @@ const Index = () => {
     setActiveView('admin');
   };
 
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    setActiveView('public');
+  const handleLogout = async () => {
+    try {
+      await logoutAdmin();
+      setIsAuthenticated(false);
+      setActiveView('public');
+      toast({
+        title: "Logged out successfully",
+        description: "You have been logged out of the admin dashboard.",
+      });
+    } catch (error) {
+      toast({
+        title: "Logout failed",
+        description: "There was an error logging out. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   if (activeView === 'login') {

@@ -59,6 +59,76 @@ This project is built with:
 - React
 - shadcn-ui
 - Tailwind CSS
+- Firebase (Firestore, Storage, Analytics)
+
+## Firebase Configuration
+
+This project uses Firebase for:
+- **Firestore**: Real-time database for events and results
+- **Storage**: Photo uploads for winners
+- **Analytics**: Usage tracking
+- **Authentication**: Admin login system
+
+The Firebase configuration is set up in `src/lib/firebase.ts` with the following services:
+- Project ID: `eventdata-4a298`
+- Storage Bucket: `eventdata-4a298.firebasestorage.app`
+- Analytics enabled for usage tracking
+- Authentication enabled for admin access
+
+### Admin Authentication
+- **Email**: `suman@ssd.com`
+- **Password**: `qweasd`
+- The admin user is automatically created on first app startup
+- Secure Firebase Authentication with proper error handling
+
+## Firebase Setup Instructions
+
+### 1. Enable Authentication
+1. Go to [Firebase Console](https://console.firebase.google.com/)
+2. Select your project: `eventdata-4a298`
+3. Navigate to **Authentication** → **Sign-in method**
+4. Click **"Get started"** or **"Email/Password"**
+5. Enable **"Email/Password"** authentication
+6. Click **Save**
+
+### 2. Set up Firestore Security Rules
+1. Go to **Firestore Database** → **Rules**
+2. Replace the default rules with:
+```javascript
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow read/write access to all users (for development)
+    // In production, you should add proper authentication checks
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}
+```
+3. Click **Publish**
+
+### 3. Set up Storage Rules (for photo uploads)
+1. Go to **Storage** → **Rules**
+2. Replace the default rules with:
+```javascript
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Allow read/write access to all users (for development)
+    // In production, you should add proper authentication checks
+    match /{allPaths=**} {
+      allow read, write: if true;
+    }
+  }
+}
+```
+3. Click **Publish**
+
+### 4. Test the Application
+1. Run `npm run dev`
+2. Check browser console for setup messages
+3. Try logging in with the admin credentials
 
 ## How can I deploy this project?
 

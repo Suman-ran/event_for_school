@@ -12,6 +12,8 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { ArrowLeft, Plus, Edit, Trash2, Save, Calendar, Trophy, Users, Settings, Upload, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useEventContext, Event } from './EventContext';
+import { uploadPhoto, generatePhotoPath, base64ToBlob } from '@/lib/firebase-storage';
+import { logoutAdmin } from '@/lib/firebase-auth';
 
 interface AdminDashboardProps {
   onBack: () => void;
@@ -77,23 +79,35 @@ const AdminDashboard = ({ onBack }: AdminDashboardProps) => {
     setResultWinners(updated);
   };
 
-  const handleSaveResults = () => {
+  const handleSaveResults = async () => {
     if (selectedEvent) {
-      // Clean winners: remove undefined fields
-      const cleanedWinners = resultWinners.map(winner => {
-        const cleaned = { ...winner };
-        Object.keys(cleaned).forEach(key => {
-          if (cleaned[key] === undefined) {
-            delete cleaned[key];
-          }
+      try {
+        // Clean winners: remove undefined fields
+        const cleanedWinners = resultWinners.map(winner => {
+          const cleaned = { ...winner };
+          Object.keys(cleaned).forEach(key => {
+            if (cleaned[key] === undefined) {
+              delete cleaned[key];
+            }
+          });
+          return cleaned;
         });
-        return cleaned;
-      });
-      updateEvent({ ...selectedEvent, winners: cleanedWinners });
-      toast({
-        title: 'Results Updated',
-        description: `Winners for ${selectedEvent.name} have been updated.`,
-      });
+        
+        console.log('Updating event results:', selectedEvent.id);
+        await updateEvent({ ...selectedEvent, winners: cleanedWinners });
+        
+        toast({
+          title: 'Results Updated',
+          description: `Winners for ${selectedEvent.name} have been updated.`,
+        });
+      } catch (error) {
+        console.error('Error updating results:', error);
+        toast({
+          title: "Error Updating Results",
+          description: error instanceof Error ? error.message : "Failed to update results. Please try again.",
+          variant: "destructive",
+        });
+      }
     }
   };
 
@@ -112,37 +126,69 @@ const AdminDashboard = ({ onBack }: AdminDashboardProps) => {
     { position: 3, house: '', name: '', points: 5, photo: undefined }
   ]);
 
-  const handleAddEvent = () => {
-    // Clean winners: remove undefined fields
-    const cleanedWinners = newWinners.map(winner => {
-      const cleaned = { ...winner };
-      Object.keys(cleaned).forEach(key => {
-        if (cleaned[key] === undefined) {
-          delete cleaned[key];
+  const handleAddEvent = async () => {
+    try {
+      // Validate required fields
+      if (!newEvent.name.trim()) {
+        toast({
+          title: "Validation Error",
+          description: "Event name is required.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      if (!newEvent.date) {
+        toast({
+          title: "Validation Error",
+          description: "Event date is required.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Clean winners: remove undefined fields
+      const cleanedWinners = newWinners.map(winner => {
+        const cleaned = { ...winner };
+        Object.keys(cleaned).forEach(key => {
+          if (cleaned[key] === undefined) {
+            delete cleaned[key];
+          }
+        });
+        return cleaned;
+      });
+
+      // Clean event: remove undefined fields
+      const cleanedEvent = { ...newEvent, winners: cleanedWinners };
+      Object.keys(cleanedEvent).forEach(key => {
+        if (cleanedEvent[key] === undefined) {
+          delete cleanedEvent[key];
         }
       });
-      return cleaned;
-    });
 
-    // Clean event: remove undefined fields
-    const cleanedEvent = { ...newEvent, winners: cleanedWinners };
-    Object.keys(cleanedEvent).forEach(key => {
-      if (cleanedEvent[key] === undefined) {
-        delete cleanedEvent[key];
-      }
-    });
-
-    addEvent(cleanedEvent);
-    toast({
-      title: 'Event Added Successfully',
-      description: `${newEvent.name} has been added to the system.`,
-    });
-    setNewEvent({ name: '', description: '', date: '', category: '', gradeLevel: '', venue: '' });
-    setNewWinners([
-      { position: 1, house: '', name: '', points: 10, photo: undefined },
-      { position: 2, house: '', name: '', points: 7, photo: undefined },
-      { position: 3, house: '', name: '', points: 5, photo: undefined }
-    ]);
+      console.log('Adding event:', cleanedEvent);
+      await addEvent(cleanedEvent);
+      
+      toast({
+        title: 'Event Added Successfully',
+        description: `${newEvent.name} has been added to the system.`,
+      });
+      
+      // Reset form
+      setNewEvent({ name: '', description: '', date: '', category: '', gradeLevel: '', venue: '' });
+      setNewWinners([
+        { position: 1, house: '', name: '', points: 10, photo: undefined },
+        { position: 2, house: '', name: '', points: 7, photo: undefined },
+        { position: 3, house: '', name: '', points: 5, photo: undefined }
+      ]);
+    } catch (error) {
+      console.error('Error adding event:', error);
+      toast({
+        title: "Error Adding Event",
+        description: error instanceof Error ? error.message : "Failed to add event. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleEditResult = (result: Event) => {
@@ -150,24 +196,46 @@ const AdminDashboard = ({ onBack }: AdminDashboardProps) => {
     setIsEditDialogOpen(true);
   };
 
-  const handleSaveEdit = () => {
+  const handleSaveEdit = async () => {
     if (editingResult) {
-      updateEvent(editingResult);
-      toast({
-        title: "Results Updated Successfully",
-        description: "Event results have been updated.",
-      });
-      setIsEditDialogOpen(false);
-      setEditingResult(null);
+      try {
+        console.log('Saving edited event:', editingResult.id);
+        await updateEvent(editingResult);
+        
+        toast({
+          title: "Results Updated Successfully",
+          description: "Event results have been updated.",
+        });
+        setIsEditDialogOpen(false);
+        setEditingResult(null);
+      } catch (error) {
+        console.error('Error saving edit:', error);
+        toast({
+          title: "Error Saving Changes",
+          description: error instanceof Error ? error.message : "Failed to save changes. Please try again.",
+          variant: "destructive",
+        });
+      }
     }
   };
 
-  const handleDeleteResult = (resultId: string) => {
-    deleteEvent(resultId);
-    toast({
-      title: "Result Deleted",
-      description: "Event result has been removed.",
-    });
+  const handleDeleteResult = async (resultId: string) => {
+    try {
+      console.log('Deleting event:', resultId);
+      await deleteEvent(resultId);
+      
+      toast({
+        title: "Result Deleted",
+        description: "Event result has been removed.",
+      });
+    } catch (error) {
+      console.error('Error deleting result:', error);
+      toast({
+        title: "Error Deleting Result",
+        description: error instanceof Error ? error.message : "Failed to delete result. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const updateEditingWinner = (index: number, field: string, value: string | number) => {
@@ -467,7 +535,7 @@ const AdminDashboard = ({ onBack }: AdminDashboardProps) => {
                                 <Input
                                   type="file"
                                   accept="image/*,.webp"
-                                  onChange={e => {
+                                  onChange={async e => {
                                     const file = e.target.files?.[0];
                                     if (file) {
                                       // Validate file type
@@ -491,20 +559,61 @@ const AdminDashboard = ({ onBack }: AdminDashboardProps) => {
                                         return;
                                       }
                                       
+                                      // Show loading state
+                                      toast({
+                                        title: "Uploading photo...",
+                                        description: "Please wait while we upload your image.",
+                                      });
+                                      
+                                      // Use base64 storage for now (to avoid CORS issues)
+                                      console.log('Saving photo as base64...');
                                       const reader = new FileReader();
-                                      reader.onload = ev => {
+                                      reader.onload = (e) => {
                                         const updated = [...resultWinners];
-                                        updated[index].photo = ev.target?.result as string;
+                                        updated[index].photo = e.target?.result as string;
                                         setResultWinners(updated);
+                                        toast({
+                                          title: "Photo saved successfully",
+                                          description: "Photo has been saved to the database.",
+                                        });
                                       };
                                       reader.onerror = () => {
                                         toast({
-                                          title: "Error reading file",
-                                          description: "Failed to read the uploaded image. Please try again.",
+                                          title: "Photo save failed",
+                                          description: "Failed to process the image. Please try again.",
                                           variant: "destructive",
                                         });
                                       };
                                       reader.readAsDataURL(file);
+                                      
+                                      // TODO: Uncomment below code after fixing CORS
+                                      /*
+                                      // Upload to Firebase Storage
+                                      try {
+                                        console.log('Starting photo upload for event:', selectedEvent.id);
+                                        const photoPath = generatePhotoPath(selectedEvent.id, file.name, index + 1);
+                                        console.log('Photo path:', photoPath);
+                                        
+                                        const downloadURL = await uploadPhoto(file, photoPath);
+                                        console.log('Photo uploaded successfully:', downloadURL);
+                                        
+                                        const updated = [...resultWinners];
+                                        updated[index].photo = downloadURL;
+                                        setResultWinners(updated);
+                                        
+                                        toast({
+                                          title: "Photo uploaded successfully",
+                                          description: "Photo has been uploaded to Firebase Storage.",
+                                        });
+                                      } catch (error) {
+                                        console.error('Photo upload error:', error);
+                                        toast({
+                                          title: "Upload failed",
+                                          description: error instanceof Error ? error.message : "Failed to upload photo. Please check Firebase Storage configuration.",
+                                          variant: "destructive",
+                                        });
+                                      }
+                                      */
                                     }
                                   }}
                                   className="hidden"
@@ -623,12 +732,23 @@ const AdminDashboard = ({ onBack }: AdminDashboardProps) => {
                             <Button
                               variant="outline"
                               size="sm"
-                              onClick={() => {
-                                updateEvent({ ...event, winners: [] });
-                                toast({
-                                  title: "Results Cleared",
-                                  description: `All results for ${event.name} have been cleared.`,
-                                });
+                              onClick={async () => {
+                                try {
+                                  console.log('Clearing results for event:', event.id);
+                                  await updateEvent({ ...event, winners: [] });
+                                  
+                                  toast({
+                                    title: "Results Cleared",
+                                    description: `All results for ${event.name} have been cleared.`,
+                                  });
+                                } catch (error) {
+                                  console.error('Error clearing results:', error);
+                                  toast({
+                                    title: "Error Clearing Results",
+                                    description: error instanceof Error ? error.message : "Failed to clear results. Please try again.",
+                                    variant: "destructive",
+                                  });
+                                }
                               }}
                               className="flex items-center space-x-1 text-red-600 hover:text-red-700"
                             >

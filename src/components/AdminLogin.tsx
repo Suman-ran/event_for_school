@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Lock, User } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { loginAdmin } from '@/lib/firebase-auth';
 
 interface AdminLoginProps {
   onLogin: () => void;
@@ -16,10 +17,15 @@ const AdminLogin = ({ onLogin }: AdminLoginProps) => {
   const [password, setPassword] = useState('');
   const { toast } = useToast();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (username === 'admin' && password === 'patricks9520') {
+    // Use email as username
+    const email = username.includes('@') ? username : `${username}@ssd.com`;
+    
+    const result = await loginAdmin(email, password);
+    
+    if (result.success) {
       onLogin();
       toast({
         title: "Login Successful",
@@ -28,7 +34,7 @@ const AdminLogin = ({ onLogin }: AdminLoginProps) => {
     } else {
       toast({
         title: "Login Failed",
-        description: "Invalid username or password. Please try again.",
+        description: result.error || "Invalid credentials. Please try again.",
         variant: "destructive",
       });
     }
@@ -49,13 +55,13 @@ const AdminLogin = ({ onLogin }: AdminLoginProps) => {
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <Label htmlFor="username">Username</Label>
+              <Label htmlFor="username">Email</Label>
               <div className="relative">
                 <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                 <Input
                   id="username"
-                  type="text"
-                  placeholder="Enter username"
+                  type="email"
+                  placeholder="Enter email address"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   className="pl-10"
@@ -83,8 +89,8 @@ const AdminLogin = ({ onLogin }: AdminLoginProps) => {
             </Button>
           </form>
           <div className="mt-4 text-center text-sm text-gray-600">
-            <p>Demo credentials:</p>
-            <p>Username: admin | Password: patricks9520</p>
+            <p>Admin credentials:</p>
+            <p>Email: suman@ssd.com | Password: qweasd</p>
           </div>
         </CardContent>
       </Card>

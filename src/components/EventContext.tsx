@@ -43,17 +43,39 @@ export const EventProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const addEvent = async (event: Omit<Event, 'id'>) => {
-    await addDoc(collection(db, 'events'), event);
+    try {
+      console.log('Adding event to Firestore:', event);
+      const docRef = await addDoc(collection(db, 'events'), event);
+      console.log('Event added successfully with ID:', docRef.id);
+      return docRef;
+    } catch (error) {
+      console.error('Error adding event to Firestore:', error);
+      throw new Error(`Failed to add event: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
   };
 
   const updateEvent = async (event: Event) => {
-    const eventRef = doc(db, 'events', event.id);
-    await updateDoc(eventRef, { ...event });
+    try {
+      console.log('Updating event in Firestore:', event.id);
+      const eventRef = doc(db, 'events', event.id);
+      await updateDoc(eventRef, { ...event });
+      console.log('Event updated successfully');
+    } catch (error) {
+      console.error('Error updating event in Firestore:', error);
+      throw new Error(`Failed to update event: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
   };
 
   const deleteEvent = async (id: string) => {
-    const eventRef = doc(db, 'events', id);
-    await deleteDoc(eventRef);
+    try {
+      console.log('Deleting event from Firestore:', id);
+      const eventRef = doc(db, 'events', id);
+      await deleteDoc(eventRef);
+      console.log('Event deleted successfully');
+    } catch (error) {
+      console.error('Error deleting event from Firestore:', error);
+      throw new Error(`Failed to delete event: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
   };
 
   return (
