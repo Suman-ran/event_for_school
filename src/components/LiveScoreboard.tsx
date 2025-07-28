@@ -53,12 +53,11 @@ const LiveScoreboard = () => {
   }, []);
 
   // Calculate house scores from all event winners
-  const houseMap: Record<string, { name: string; color: string; score: number; bgGradient: string }> = {
-    Delany: { name: 'Delany', color: 'red', score: 0, bgGradient: 'from-red-500 to-red-600' },
-    Gandhi: { name: 'Gandhi', color: 'blue', score: 0, bgGradient: 'from-blue-500 to-blue-600' },
-    Tagore: { name: 'Tagore', color: 'green', score: 0, bgGradient: 'from-green-500 to-green-600' },
-    Aloysius: { name: 'Aloysius', color: 'yellow', score: 0, bgGradient: 'from-yellow-500 to-yellow-600' },
-    Nehru: { name: 'Nehru', color: 'purple', score: 0, bgGradient: 'from-purple-500 to-purple-600' },
+  const houseMap: Record<string, { name: string; color: string; score: number }> = {
+    Delany: { name: 'Delany', color: 'bg-red-600', score: 0 },
+    Gandhi: { name: 'Gandhi', color: 'bg-blue-600', score: 0 },
+    Tagore: { name: 'Tagore', color: 'bg-green-600', score: 0 },
+    Nehru: { name: 'Nehru', color: 'bg-purple-700', score: 0 },
   };
   events.forEach((event: any) => {
     event.winners?.forEach((winner: any) => {
@@ -103,9 +102,9 @@ const LiveScoreboard = () => {
       <CardContent className="p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {sortedHouses.map((house, index) => (
-            <div 
+            <div
               key={house.name}
-              className={`relative p-6 rounded-xl border-2 transition-all duration-300 hover:scale-105 ${getRankColor(index)}`}
+              className={`relative p-6 rounded-xl border-2 transition-all duration-300 hover:scale-105 ${house.color} text-white`}
             >
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-3">
