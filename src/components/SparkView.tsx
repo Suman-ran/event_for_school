@@ -17,6 +17,7 @@ const SparkView = ({ onBack }: SparkViewProps) => {
     Gandhi: { name: 'Gandhi', color: 'blue', score: 0, bgGradient: 'from-blue-500 to-blue-600' },
     Tagore: { name: 'Tagore', color: 'green', score: 0, bgGradient: 'from-green-500 to-green-600' },
     Aloysius: { name: 'Aloysius', color: 'yellow', score: 0, bgGradient: 'from-yellow-500 to-yellow-600' },
+    Nehru: { name: 'Nehru', color: 'purple', score: 0, bgGradient: 'from-purple-500 to-purple-600' },
   };
   events.forEach(event => {
     event.winners.forEach(winner => {
@@ -46,7 +47,8 @@ const SparkView = ({ onBack }: SparkViewProps) => {
       'Delany': 'bg-red-100 text-red-800 border-red-200',
       'Gandhi': 'bg-blue-100 text-blue-800 border-blue-200',
       'Tagore': 'bg-green-100 text-green-800 border-green-200',
-      'Aloysius': 'bg-yellow-100 text-yellow-800 border-yellow-200'
+      'Aloysius': 'bg-yellow-100 text-yellow-800 border-yellow-200',
+      'Nehru': 'bg-purple-100 text-purple-800 border-purple-200',
     };
     return colors[house as keyof typeof colors] || 'bg-gray-100 text-gray-800';
   };
