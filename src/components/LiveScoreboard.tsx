@@ -14,12 +14,12 @@ const LiveScoreboard = () => {
     const loadEvents = async () => {
       try {
         console.log('Loading events for scoreboard from Firebase...');
-        const unsub = onSnapshot(collection(db, 'events'), (snapshot) => {
+    const unsub = onSnapshot(collection(db, 'events'), (snapshot) => {
           const firebaseEvents = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
           console.log('Loaded events for scoreboard:', firebaseEvents);
           setEvents(firebaseEvents);
-        });
-        return () => unsub();
+    });
+    return () => unsub();
       } catch (error) {
         console.error('Error loading events for scoreboard, using mock data:', error);
         // Fallback to mock data if Firebase fails
@@ -102,7 +102,7 @@ const LiveScoreboard = () => {
       <CardContent className="p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {sortedHouses.map((house, index) => (
-            <div
+            <div 
               key={house.name}
               className={`relative p-6 rounded-xl border-2 transition-all duration-300 hover:scale-105 ${house.color} text-white`}
             >

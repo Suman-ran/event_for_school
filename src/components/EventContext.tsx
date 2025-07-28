@@ -40,12 +40,12 @@ export const EventProvider = ({ children }: { children: ReactNode }) => {
     const loadEvents = async () => {
       try {
         console.log('Loading events from Firebase...');
-        const unsub = onSnapshot(collection(db, 'events'), (snapshot) => {
+    const unsub = onSnapshot(collection(db, 'events'), (snapshot) => {
           const firebaseEvents = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }) as Event);
           console.log('Loaded events from Firebase:', firebaseEvents);
           setEvents(firebaseEvents);
-        });
-        return () => unsub();
+    });
+    return () => unsub();
       } catch (error) {
         console.error('Error loading events from Firebase, using mock data:', error);
         // Fallback to mock data if Firebase fails

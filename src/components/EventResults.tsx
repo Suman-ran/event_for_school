@@ -16,10 +16,10 @@ const EventResults = () => {
 
   const getHouseColor = (house: string) => {
     const colors = {
-      'Delany': 'bg-red-100 text-red-800 border-red-200',
-      'Gandhi': 'bg-blue-100 text-blue-800 border-blue-200',
-      'Tagore': 'bg-green-100 text-green-800 border-green-200',
-      'Aloysius': 'bg-yellow-100 text-yellow-800 border-yellow-200'
+      'Delany': 'bg-green-600 text-red-800 border-red-200',
+      'Gandhi': 'bg-yellow-500 text-blue-800 border-blue-200',
+      'Tagore': 'bg-blue-600 text-green-800 border-green-200',
+      'Aloysius': 'bg-purple-700 text-yellow-800 border-yellow-200'
     };
     return colors[house as keyof typeof colors] || 'bg-gray-100 text-gray-800';
   };

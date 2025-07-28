@@ -66,8 +66,8 @@ const App = () => {
     const initializeFirebase = async () => {
       try {
         console.log('Initializing Firebase with real configuration...');
-        await testFirebaseConnection();
-        await setupAdminUser();
+      await testFirebaseConnection();
+      await setupAdminUser();
         console.log('Firebase initialized successfully');
         setIsLoading(false);
       } catch (err) {
