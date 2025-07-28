@@ -104,7 +104,7 @@ const SparkView = ({ onBack }: SparkViewProps) => {
               {sortedHouses.map((house, index) => (
                 <div
                   key={house.name}
-                  className={`rounded-lg p-4 text-center border border-white/30 ${getHouseColor(house.name)} backdrop-blur-sm`}
+                  className={`rounded-lg p-4 text-center border border-white/30 ${getHouseColor(house.name)} text-gray-900 backdrop-blur-sm`}
                 >
                   <div className="flex items-center justify-center mb-2">
                     {getRankIcon(index)}
