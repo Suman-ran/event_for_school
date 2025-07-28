@@ -43,9 +43,9 @@ const SparkView = ({ onBack }: SparkViewProps) => {
 
   const getHouseColor = (house: string) => {
     const colors = {
-      'Delany': 'bg-red-600',
-      'Gandhi': 'bg-blue-600',
-      'Tagore': 'bg-green-600',
+      'Delany': 'bg-green-600',
+      'Gandhi': 'bg-yellow-500',
+      'Tagore': 'bg-blue-600',
       'Nehru': 'bg-purple-700',
     };
     return colors[house as keyof typeof colors] || 'bg-gray-600';
