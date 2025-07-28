@@ -62,10 +62,10 @@ const App = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Initialize Firebase (with error handling)
+    // Initialize Firebase with real configuration
     const initializeFirebase = async () => {
       try {
-        console.log('Initializing Firebase...');
+        console.log('Initializing Firebase with real configuration...');
         await testFirebaseConnection();
         await setupAdminUser();
         console.log('Firebase initialized successfully');
@@ -77,9 +77,7 @@ const App = () => {
       }
     };
     
-    // For local development, skip Firebase for now
-    console.log('Skipping Firebase initialization for local development');
-    setIsLoading(false);
+    initializeFirebase();
   }, []);
 
   if (isLoading) {
@@ -94,6 +92,26 @@ const App = () => {
         color: 'white'
       }}>
         Loading Cynosure 2025-26...
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        height: '100vh',
+        fontSize: '18px',
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        color: 'white',
+        flexDirection: 'column',
+        padding: '20px'
+      }}>
+        <h2>⚠️ Firebase Connection Error</h2>
+        <p>{error}</p>
+        <p>Please check your Firebase configuration.</p>
       </div>
     );
   }

@@ -36,45 +36,54 @@ export const EventProvider = ({ children }: { children: ReactNode }) => {
   const [events, setEvents] = useState<Event[]>([]);
 
   useEffect(() => {
-    // For local development, use mock data instead of Firebase
-    const mockEvents: Event[] = [
-      {
-        id: '1',
-        name: 'Dance Competition',
-        date: '2025-01-15',
-        description: 'Inter-house dance competition',
-        category: 'Group',
-        gradeLevel: 'Senior',
-        venue: 'Auditorium',
-        winners: [
-          { position: 1, house: 'Delany', name: 'John Doe', points: 10 },
-          { position: 2, house: 'Gandhi', name: 'Jane Smith', points: 8 },
-          { position: 3, house: 'Tagore', name: 'Mike Johnson', points: 6 }
-        ]
-      },
-      {
-        id: '2',
-        name: 'Debate Competition',
-        date: '2025-01-20',
-        description: 'Inter-house debate competition',
-        category: 'Individual',
-        gradeLevel: 'Senior',
-        venue: 'Conference Room',
-        winners: [
-          { position: 1, house: 'Gandhi', name: 'Sarah Wilson', points: 10 },
-          { position: 2, house: 'Aloysius', name: 'Tom Brown', points: 8 },
-          { position: 3, house: 'Delany', name: 'Lisa Davis', points: 6 }
-        ]
+    // Use real Firebase data with fallback to mock data
+    const loadEvents = async () => {
+      try {
+        console.log('Loading events from Firebase...');
+        const unsub = onSnapshot(collection(db, 'events'), (snapshot) => {
+          const firebaseEvents = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }) as Event);
+          console.log('Loaded events from Firebase:', firebaseEvents);
+          setEvents(firebaseEvents);
+        });
+        return () => unsub();
+      } catch (error) {
+        console.error('Error loading events from Firebase, using mock data:', error);
+        // Fallback to mock data if Firebase fails
+        const mockEvents: Event[] = [
+          {
+            id: '1',
+            name: 'Dance Competition',
+            date: '2025-01-15',
+            description: 'Inter-house dance competition',
+            category: 'Group',
+            gradeLevel: 'Senior',
+            venue: 'Auditorium',
+            winners: [
+              { position: 1, house: 'Delany', name: 'John Doe', points: 10 },
+              { position: 2, house: 'Gandhi', name: 'Jane Smith', points: 8 },
+              { position: 3, house: 'Tagore', name: 'Mike Johnson', points: 6 }
+            ]
+          },
+          {
+            id: '2',
+            name: 'Debate Competition',
+            date: '2025-01-20',
+            description: 'Inter-house debate competition',
+            category: 'Individual',
+            gradeLevel: 'Senior',
+            venue: 'Conference Room',
+            winners: [
+              { position: 1, house: 'Gandhi', name: 'Sarah Wilson', points: 10 },
+              { position: 2, house: 'Aloysius', name: 'Tom Brown', points: 8 },
+              { position: 3, house: 'Delany', name: 'Lisa Davis', points: 6 }
+            ]
+          }
+        ];
+        setEvents(mockEvents);
       }
-    ];
+    };
     
-    setEvents(mockEvents);
-    
-    // Uncomment the following lines when Firebase is properly configured
-    // const unsub = onSnapshot(collection(db, 'events'), (snapshot) => {
-    //   setEvents(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }) as Event));
-    // });
-    // return () => unsub();
+    loadEvents();
   }, []);
 
   const addEvent = async (event: Omit<Event, 'id'>) => {
