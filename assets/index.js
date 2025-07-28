@@ -10,7 +10,7 @@ const App = () => {
       padding: '20px'
     } 
   }, [
-    React.createElement('h1', { key: 'title' }, 'Cynosure 2025-'26'),
+    React.createElement('h1', { key: 'title' }, 'Cynosure 2025-26'),
     React.createElement('p', { key: 'subtitle' }, 'Live Scoring System'),
     React.createElement('p', { key: 'status' }, 'Application is loading...'),
     React.createElement('p', { key: 'note' }, 'Please update Node.js to 18.18.0+ for full functionality')
