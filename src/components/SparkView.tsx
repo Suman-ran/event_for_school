@@ -13,9 +13,9 @@ const SparkView = ({ onBack }: SparkViewProps) => {
   const { events } = useEventContext();
   // Calculate house scores from all event winners
   const houseMap: Record<string, { name: string; color: string; score: number }> = {
-    Delany: { name: 'Delany', color: 'bg-red-600', score: 0 },
-    Gandhi: { name: 'Gandhi', color: 'bg-blue-600', score: 0 },
-    Tagore: { name: 'Tagore', color: 'bg-green-600', score: 0 },
+    Delany: { name: 'Delany', color: 'bg-green-600', score: 0 },
+    Gandhi: { name: 'Gandhi', color: 'bg-yellow-500', score: 0 },
+    Tagore: { name: 'Tagore', color: 'bg-blue-600', score: 0 },
     Nehru: { name: 'Nehru', color: 'bg-purple-700', score: 0 },
   };
   events.forEach(event => {
