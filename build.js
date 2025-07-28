@@ -24,10 +24,10 @@ const indexHtml = `<!DOCTYPE html>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cynosure 2025-'26 - Live Scoring System</title>
-    <meta name="description" content="Live scoring and results tracking for school house cultural events featuring Delany, Gandhi, Tagore, and Aloysius houses" />
+    <title>Spark - Live Scoring System</title>
+    <meta name="description" content="Live scoring and results tracking for school house cultural events featuring Delany, Gandhi, Tagore, Aloysius, and Nehru houses" />
     <meta name="author" content="School House Events System" />
-    <meta property="og:title" content="Cynosure 2025-'26 - Live Scoring System" />
+    <meta property="og:title" content="Spark - Live Scoring System" />
     <meta property="og:description" content="Track live scores and results for inter-house cultural competitions" />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="https://www.stpatricksacademy.in/images/logo.png" />
@@ -114,7 +114,7 @@ const App = () => {
       padding: '20px'
     } 
   }, [
-    React.createElement('h1', { key: 'title' }, 'Cynosure 2025-26'),
+                    React.createElement('h1', { key: 'title' }, 'Spark'),
     React.createElement('p', { key: 'subtitle' }, 'Live Scoring System'),
     React.createElement('p', { key: 'status' }, 'Application is loading...'),
     React.createElement('p', { key: 'note' }, 'Please update Node.js to 18.18.0+ for full functionality')

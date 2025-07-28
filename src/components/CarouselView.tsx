@@ -85,7 +85,7 @@ const CarouselView = ({ onBack }: CarouselViewProps) => {
                 Back
               </Button>
               <div className="text-center">
-                <h1 className="text-4xl font-bold text-white mb-2">Cynosure 2025-'26</h1>
+                <h1 className="text-4xl font-bold text-white mb-2">Spark</h1>
                 <p className="text-white/80">Cultural Event Results Showcase</p>
               </div>
             </div>

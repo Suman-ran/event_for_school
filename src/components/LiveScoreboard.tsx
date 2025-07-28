@@ -30,7 +30,8 @@ const LiveScoreboard = () => {
             winners: [
               { position: 1, house: 'Delany', name: 'John Doe', points: 10 },
               { position: 2, house: 'Gandhi', name: 'Jane Smith', points: 8 },
-              { position: 3, house: 'Tagore', name: 'Mike Johnson', points: 6 }
+              { position: 3, house: 'Tagore', name: 'Mike Johnson', points: 6 },
+              { position: 4, house: 'Nehru', name: 'Alex Kumar', points: 4 }
             ]
           },
           {
@@ -39,7 +40,8 @@ const LiveScoreboard = () => {
             winners: [
               { position: 1, house: 'Gandhi', name: 'Sarah Wilson', points: 10 },
               { position: 2, house: 'Aloysius', name: 'Tom Brown', points: 8 },
-              { position: 3, house: 'Delany', name: 'Lisa Davis', points: 6 }
+              { position: 3, house: 'Delany', name: 'Lisa Davis', points: 6 },
+              { position: 4, house: 'Nehru', name: 'Priya Sharma', points: 4 }
             ]
           }
         ];
@@ -56,6 +58,7 @@ const LiveScoreboard = () => {
     Gandhi: { name: 'Gandhi', color: 'blue', score: 0, bgGradient: 'from-blue-500 to-blue-600' },
     Tagore: { name: 'Tagore', color: 'green', score: 0, bgGradient: 'from-green-500 to-green-600' },
     Aloysius: { name: 'Aloysius', color: 'yellow', score: 0, bgGradient: 'from-yellow-500 to-yellow-600' },
+    Nehru: { name: 'Nehru', color: 'purple', score: 0, bgGradient: 'from-purple-500 to-purple-600' },
   };
   events.forEach((event: any) => {
     event.winners?.forEach((winner: any) => {

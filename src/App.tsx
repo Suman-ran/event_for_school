@@ -91,7 +91,7 @@ const App = () => {
         background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
         color: 'white'
       }}>
-        Loading Cynosure 2025-26...
+        Loading Spark...
       </div>
     );
   }

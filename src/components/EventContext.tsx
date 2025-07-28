@@ -61,7 +61,8 @@ export const EventProvider = ({ children }: { children: ReactNode }) => {
             winners: [
               { position: 1, house: 'Delany', name: 'John Doe', points: 10 },
               { position: 2, house: 'Gandhi', name: 'Jane Smith', points: 8 },
-              { position: 3, house: 'Tagore', name: 'Mike Johnson', points: 6 }
+              { position: 3, house: 'Tagore', name: 'Mike Johnson', points: 6 },
+              { position: 4, house: 'Nehru', name: 'Alex Kumar', points: 4 }
             ]
           },
           {
@@ -75,7 +76,8 @@ export const EventProvider = ({ children }: { children: ReactNode }) => {
             winners: [
               { position: 1, house: 'Gandhi', name: 'Sarah Wilson', points: 10 },
               { position: 2, house: 'Aloysius', name: 'Tom Brown', points: 8 },
-              { position: 3, house: 'Delany', name: 'Lisa Davis', points: 6 }
+              { position: 3, house: 'Delany', name: 'Lisa Davis', points: 6 },
+              { position: 4, house: 'Nehru', name: 'Priya Sharma', points: 4 }
             ]
           }
         ];
