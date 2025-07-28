@@ -7,7 +7,7 @@ import LiveScoreboard from '@/components/LiveScoreboard';
 import EventResults from '@/components/EventResults';
 import AdminDashboard from '@/components/AdminDashboard';
 import AdminLogin from '@/components/AdminLogin';
-import SparkView from '@/components/CarouselView';
+import SparkView from '@/components/SparkView';
 import { useEventContext } from '../components/EventContext';
 import { onAuthStateChange, logoutAdmin } from '@/lib/firebase-auth';
 import { useToast } from '@/hooks/use-toast';
