@@ -635,6 +635,7 @@ const AdminDashboard = ({ onBack }: AdminDashboardProps) => {
                                 <SelectItem value="Gandhi">Gandhi</SelectItem>
                                 <SelectItem value="Tagore">Tagore</SelectItem>
                                 <SelectItem value="Aloysius">Aloysius</SelectItem>
+                                <SelectItem value="Nehru">Nehru</SelectItem>
                               </SelectContent>
                             </Select>
                           </div>
@@ -808,6 +809,7 @@ const AdminDashboard = ({ onBack }: AdminDashboardProps) => {
                                   <SelectItem value="Gandhi">Gandhi</SelectItem>
                                   <SelectItem value="Tagore">Tagore</SelectItem>
                                   <SelectItem value="Aloysius">Aloysius</SelectItem>
+                                  <SelectItem value="Nehru">Nehru</SelectItem>
                                 </SelectContent>
                               </Select>
                             </div>
