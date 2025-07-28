@@ -7,7 +7,7 @@ import LiveScoreboard from '@/components/LiveScoreboard';
 import EventResults from '@/components/EventResults';
 import AdminDashboard from '@/components/AdminDashboard';
 import AdminLogin from '@/components/AdminLogin';
-import CarouselView from '@/components/CarouselView';
+import SparkView from '@/components/CarouselView';
 import { useEventContext } from '../components/EventContext';
 import { onAuthStateChange, logoutAdmin } from '@/lib/firebase-auth';
 import { useToast } from '@/hooks/use-toast';
@@ -92,7 +92,7 @@ const Index = () => {
   }
 
   if (activeView === 'carousel') {
-    return <CarouselView onBack={() => setActiveView('public')} />;
+    return <SparkView onBack={() => setActiveView('public')} />;
   }
 
   return (
@@ -117,7 +117,7 @@ const Index = () => {
                 className="flex items-center space-x-2"
               >
                 <Presentation className="h-4 w-4" />
-                <span>Carousel View</span>
+                <span>Spark View</span>
               </Button>
               <Button 
                 onClick={handleAdminClick}

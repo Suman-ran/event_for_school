@@ -5,11 +5,11 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { ArrowLeft, Trophy, Medal, Award, Crown } from 'lucide-react';
 import { useEventContext } from './EventContext';
 
-interface CarouselViewProps {
+interface SparkViewProps {
   onBack: () => void;
 }
 
-const CarouselView = ({ onBack }: CarouselViewProps) => {
+const SparkView = ({ onBack }: SparkViewProps) => {
   const { events } = useEventContext();
   // Calculate house scores from all event winners
   const houseMap: Record<string, { name: string; color: string; score: number; bgGradient: string }> = {
@@ -85,7 +85,7 @@ const CarouselView = ({ onBack }: CarouselViewProps) => {
                 Back
               </Button>
               <div className="text-center">
-                <h1 className="text-4xl font-bold text-white mb-2">Spark</h1>
+                <h1 className="text-4xl font-bold text-white mb-2">Spark View</h1>
                 <p className="text-white/80">Cultural Event Results Showcase</p>
               </div>
             </div>
@@ -188,4 +188,4 @@ const CarouselView = ({ onBack }: CarouselViewProps) => {
   );
 };
 
-export default CarouselView;
+export default SparkView;
