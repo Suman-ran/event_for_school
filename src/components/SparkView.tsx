@@ -44,13 +44,13 @@ const SparkView = ({ onBack }: SparkViewProps) => {
 
   const getHouseColor = (house: string) => {
     const colors = {
-      'Delany': 'bg-red-100 text-red-800 border-red-200',
-      'Gandhi': 'bg-blue-100 text-blue-800 border-blue-200',
-      'Tagore': 'bg-green-100 text-green-800 border-green-200',
-      'Aloysius': 'bg-yellow-100 text-yellow-800 border-yellow-200',
-      'Nehru': 'bg-purple-100 text-purple-800 border-purple-200',
+      'Delany': 'bg-red-600',
+      'Gandhi': 'bg-blue-600',
+      'Tagore': 'bg-green-600',
+      'Aloysius': 'bg-yellow-500',
+      'Nehru': 'bg-purple-700',
     };
-    return colors[house as keyof typeof colors] || 'bg-gray-100 text-gray-800';
+    return colors[house as keyof typeof colors] || 'bg-gray-600';
   };
 
   const getPositionIcon = (position: number) => {
@@ -104,7 +104,7 @@ const SparkView = ({ onBack }: SparkViewProps) => {
               {sortedHouses.map((house, index) => (
                 <div
                   key={house.name}
-                  className={`rounded-lg p-4 text-center border border-white/30 ${getHouseColor(house.name)} text-gray-900 backdrop-blur-sm`}
+                  className={`rounded-lg p-4 text-center border border-white/30 ${getHouseColor(house.name)} text-white backdrop-blur-sm`}
                 >
                   <div className="flex items-center justify-center mb-2">
                     {getRankIcon(index)}
