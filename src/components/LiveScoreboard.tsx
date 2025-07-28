@@ -10,10 +10,35 @@ const LiveScoreboard = () => {
   const [events, setEvents] = useState<any[]>([]);
 
   useEffect(() => {
-    const unsub = onSnapshot(collection(db, 'events'), (snapshot) => {
-      setEvents(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
-    });
-    return () => unsub();
+    // For local development, use mock data instead of Firebase
+    const mockEvents = [
+      {
+        id: '1',
+        name: 'Dance Competition',
+        winners: [
+          { position: 1, house: 'Delany', name: 'John Doe', points: 10 },
+          { position: 2, house: 'Gandhi', name: 'Jane Smith', points: 8 },
+          { position: 3, house: 'Tagore', name: 'Mike Johnson', points: 6 }
+        ]
+      },
+      {
+        id: '2',
+        name: 'Debate Competition',
+        winners: [
+          { position: 1, house: 'Gandhi', name: 'Sarah Wilson', points: 10 },
+          { position: 2, house: 'Aloysius', name: 'Tom Brown', points: 8 },
+          { position: 3, house: 'Delany', name: 'Lisa Davis', points: 6 }
+        ]
+      }
+    ];
+    
+    setEvents(mockEvents);
+    
+    // Uncomment the following lines when Firebase is properly configured
+    // const unsub = onSnapshot(collection(db, 'events'), (snapshot) => {
+    //   setEvents(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+    // });
+    // return () => unsub();
   }, []);
 
   // Calculate house scores from all event winners

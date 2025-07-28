@@ -3,7 +3,7 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 
 export default defineConfig({
-  base: '/event_for_school/',
+  base: '/',
   server: {
     host: "::",
     port: 8080,
