@@ -12,12 +12,11 @@ interface SparkViewProps {
 const SparkView = ({ onBack }: SparkViewProps) => {
   const { events } = useEventContext();
   // Calculate house scores from all event winners
-  const houseMap: Record<string, { name: string; color: string; score: number; bgGradient: string }> = {
-    Delany: { name: 'Delany', color: 'red', score: 0, bgGradient: 'from-red-500 to-red-600' },
-    Gandhi: { name: 'Gandhi', color: 'blue', score: 0, bgGradient: 'from-blue-500 to-blue-600' },
-    Tagore: { name: 'Tagore', color: 'green', score: 0, bgGradient: 'from-green-500 to-green-600' },
-    Aloysius: { name: 'Aloysius', color: 'yellow', score: 0, bgGradient: 'from-yellow-500 to-yellow-600' },
-    Nehru: { name: 'Nehru', color: 'purple', score: 0, bgGradient: 'from-purple-500 to-purple-600' },
+  const houseMap: Record<string, { name: string; color: string; score: number }> = {
+    Delany: { name: 'Delany', color: 'bg-red-600', score: 0 },
+    Gandhi: { name: 'Gandhi', color: 'bg-blue-600', score: 0 },
+    Tagore: { name: 'Tagore', color: 'bg-green-600', score: 0 },
+    Nehru: { name: 'Nehru', color: 'bg-purple-700', score: 0 },
   };
   events.forEach(event => {
     event.winners.forEach(winner => {
@@ -47,7 +46,6 @@ const SparkView = ({ onBack }: SparkViewProps) => {
       'Delany': 'bg-red-600',
       'Gandhi': 'bg-blue-600',
       'Tagore': 'bg-green-600',
-      'Aloysius': 'bg-yellow-500',
       'Nehru': 'bg-purple-700',
     };
     return colors[house as keyof typeof colors] || 'bg-gray-600';
@@ -104,7 +102,7 @@ const SparkView = ({ onBack }: SparkViewProps) => {
               {sortedHouses.map((house, index) => (
                 <div
                   key={house.name}
-                  className={`rounded-lg p-4 text-center border border-white/30 ${getHouseColor(house.name)} text-white backdrop-blur-sm`}
+                  className={`rounded-lg p-4 text-center border border-white/30 ${house.color} text-white backdrop-blur-sm`}
                 >
                   <div className="flex items-center justify-center mb-2">
                     {getRankIcon(index)}
